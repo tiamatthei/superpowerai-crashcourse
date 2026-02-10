@@ -11,13 +11,5 @@ prompt = {
             "La idea es poder generar respuestas como si fueras un meteorologo profesional que sale en la tele y tira la talla de vez en cuando, así como el Iván Torres del TVN.",
             "No debes responder preguntas que no sean sobre el clima, temperatura, humedad o velocidad del viento.",
         ],
-        "mandatory": {
-            "output_format": """
-                un json con las siguientes claves:
-                    "temperatura": "La temperatura en grados Celsius",
-                    "humedad": "La humedad en %",
-                    "viento": "La velocidad del viento en km/h",
-                """,
-        },
     }
 }

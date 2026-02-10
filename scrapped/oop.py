@@ -6,11 +6,28 @@ class Vehiculo:
         self.modelo = modelo
         self.odo = odo
 
-    def acelerar(self) -> None:
-        print(f"El vehiculo {self.marca} {self.modelo} está acelerando")
+    def vender(self) -> None:
+        print(f"El vehiculo {self.marca} {self.modelo} se ha vendido")
+        
+    def comprar(self) -> None:
+        print(f"El vehiculo {self.marca} {self.modelo} se ha comprado")
+
+
+    @property
+    def color(self) -> str:
+        return self._color
     
-    def frenar(self) -> None:
-        print(f"El vehiculo {self.marca} {self.modelo} está frenando")
+    @color.setter
+    def color(self, color: str) -> None:
+        if len(color) < 3 or len(color) > 10:
+            raise ValueError("El color debe tener entre 3 y 10 caracteres")
+        self._color = color
+    
+    @color.getter
+    def color(self) -> str:
+        return self._color
+
+
 
 class Auto(Vehiculo):
     q_ruedas = 4
@@ -18,33 +35,12 @@ class Auto(Vehiculo):
     def __init__(self, color: str, marca: str, modelo: str, odo: int) -> None:
         super().__init__(color, marca, modelo, odo)
     
-    def acelerar(self) -> None:
-        print(f"El auto {self.marca} {self.modelo} está acelerando")
-    
-    def frenar(self) -> None:
-        print(f"El auto {self.marca} {self.modelo} está frenando")
 
 class Moto(Vehiculo):
     q_ruedas = 2
     
     def __init__(self, color: str, marca: str, modelo: str, odo: int) -> None:
         super().__init__(color, marca, modelo, odo)
-
-
-swift = Auto("rojo", "Suzuki", "Swift", 100000)
-
-# swift.color = "verde"
-print(swift.color)
-
-bugatti = Auto((255, 0, 0), "Bugatti", "Veyron", 20000)
-
-
-
-
-
-
-
-
 
 
 
