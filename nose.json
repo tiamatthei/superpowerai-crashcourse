@@ -1,0 +1,73 @@
+{'messages': [
+    HumanMessage(content='Como va a estar el clima hoy en conce?', additional_kwargs={}, response_metadata={}, id='7fe8b85b-4225-4425-9471-b6ad796febeb'),
+    
+    AIMessage(content=[
+            {'type': 'text', 'text': '¡Hola! Para darte el pronóstico completo, necesito obtener la temperatura, la humedad y la velocidad del viento. ¡Vamos por parte, como dijo Jack el Destripador!\n\nPrimero, veamos la temperatura.', 'extras': {'signature': 'CuEBAb4+9vvx6XK1hbZI+kRCX4YL5X+I8MFK3nBhGwuWuw2susBxDKwDz1O8iIHXeu1U73s7F9zqjS1abqHi3qreH+3ivbUx/X9F8smemY6NP2oniK++URQO2gCerXZ18WH9inELKNV3Is+4gjEtIi8vNGemS4UoNAIgsN016CgZYupZ7L6zQqa9YPmbjAwOsF7oV94m4svJ1bsbAw57V/JZHLu1TkI6RINGmyX+G0PQUU3AqsLmAaToxbbY+WGGuLgUoUk9bVN8LbI0COoVshivNvVZBV2ZrDSPUTlIxJF0ghbB'
+                }
+            }
+        ], 
+        additional_kwargs={'function_call': {'name': 'get_temperature', 'arguments': '{
+                    "scale": "celsius",
+                    "city": "Concepci\\u00f3n"
+                }'
+            }
+        }, response_metadata={'finish_reason': 'STOP', 'model_name': 'gemini-2.5-flash', 'safety_ratings': [], 'model_provider': 'google_genai'
+        }, id='lc_run--019c52c3-be1d-7642-8e0a-0350c953c996-0', tool_calls=[
+            {'name': 'get_temperature', 'args': {'scale': 'celsius', 'city': 'Concepción'
+                }, 'id': '051eee30-50e2-4e24-b1a8-c2e98186330b', 'type': 'tool_call'
+            }
+        ], invalid_tool_calls=[], usage_metadata={'input_tokens': 421, 'output_tokens': 109, 'total_tokens': 530, 'input_token_details': {'cache_read': 0
+            }, 'output_token_details': {'reasoning': 42
+            }
+        }), 
+        
+    ToolMessage(content='20.0', 
+    name='get_temperature', id='8807a7a5-043d-44d3-bb11-22b82ae3ab72', 
+    tool_call_id='051eee30-50e2-4e24-b1a8-c2e98186330b'), 
+    
+    
+    AIMessage(content='', additional_kwargs={'function_call': {'name': 'get_humidity', 'arguments': '{
+                    "city": "Concepci\\u00f3n"
+                }'
+            }
+        }, response_metadata={'finish_reason': 'STOP', 'model_name': 'gemini-2.5-flash', 'safety_ratings': [], 'model_provider': 'google_genai'
+        }, id='lc_run--019c52c3-c6a3-7591-8f4b-738b72241849-0', tool_calls=[
+            {'name': 'get_humidity', 'args': {'city': 'Concepción'
+                }, 'id': '2f6b018a-eaba-4cd1-8e77-4ded083e1307', 'type': 'tool_call'
+            }
+        ], invalid_tool_calls=[], usage_metadata={'input_tokens': 459, 'output_tokens': 16, 'total_tokens': 475, 'input_token_details': {'cache_read': 0
+            }
+        }), 
+        
+    ToolMessage(content='50', name='get_humidity', id='653ab0d7-bf0d-4d24-80ee-74ac3a34313c', tool_call_id='2f6b018a-eaba-4cd1-8e77-4ded083e1307'), 
+    
+    AIMessage(content='', additional_kwargs={'function_call': {'name': 'get_wind_speed', 'arguments': '{
+                    "city": "Concepci\\u00f3n"
+                }'
+            }
+        }, response_metadata={'finish_reason': 'STOP', 'model_name': 'gemini-2.5-flash', 'safety_ratings': [], 'model_provider': 'google_genai'
+        }, id='lc_run--019c52c3-ca56-7dc2-b50e-1bcc932b5973-0', tool_calls=[
+            {'name': 'get_wind_speed', 'args': {'city': 'Concepción'
+                }, 'id': '8de1bd1e-1b00-47ee-8ed7-2006d9664052', 'type': 'tool_call'
+            }
+        ], invalid_tool_calls=[], usage_metadata={'input_tokens': 491, 'output_tokens': 18, 'total_tokens': 509, 'input_token_details': {'cache_read': 0
+            }
+        }), 
+        
+    ToolMessage(content='10.0', name='get_wind_speed', id='01107580-1233-4d4e-b8ea-43c9f6ac2882', tool_call_id='8de1bd1e-1b00-47ee-8ed7-2006d9664052'), 
+    
+    AIMessage(content='¡Hola, amigos de Concepción! 
+    Aquí su meteorólogo de confianza con las últimas novedades del tiempo. 
+    Hoy tendremos una jornada con una temperatura agradable de 20 grados Celsius. 
+    La humedad se mantendrá en un 50%, ideal para disfrutar al aire libre. 
+    Y el viento, soplará a unos 10 km/h, una brisa suavecita para que no se les vuele el sombrero. 
+    ¡Así que a disfrutar de este día penquista!', 
+    
+    additional_kwargs={}, response_metadata={'finish_reason': 'STOP', 'model_name': 'gemini-2.5-flash', 
+    'safety_ratings': [], 'model_provider': 'google_genai'
+        }, id='lc_run--019c52c3-ccee-7fa1-80c7-cb9700980d74-0', tool_calls=[], invalid_tool_calls=[], 
+        usage_metadata={'input_tokens': 527, 'output_tokens': 96, 'total_tokens': 623, 'input_token_details': {'cache_read': 0
+            }
+        })
+    ]
+}
