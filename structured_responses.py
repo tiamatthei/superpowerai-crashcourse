@@ -5,6 +5,7 @@ from google.genai.types import (
     Tool,
     Part,
     Content,
+    GenerateContentResponse,
 )
 
 from pydantic_ai import format_as_xml
@@ -15,7 +16,7 @@ from system_prompt import prompt
 from models.clima import Clima
 from pydantic import BaseModel
 
-# load_dotenv()
+load_dotenv()
 
 client = Client()
 
@@ -83,7 +84,7 @@ config = GenerateContentConfig(
 # Este es el primer contenido (prompt) (input)
 user_content = Content(
     role="user",
-    parts=[Part.from_text(text="¿Cuál es el clima en Conce en celcius?")],
+    parts=[Part.from_text(text="¿Cuál es el clima en Conce?")],
 )
 
 # Esta es la llamada a la api (modelo) (input)
@@ -94,44 +95,49 @@ response = client.models.generate_content(
 )
 
 
-function_response_parts = []
 
-for part in response.candidates[0].content.parts:
-    if part.function_call:
-        print("intentó ejecutar", part.function_call.name)
-        print("con los parametros:", part.function_call.args)
-        result = None
+def tool_processing(response: GenerateContentResponse) -> list[Part]:
+    function_response_parts = []
+    for part in response.candidates[0].content.parts:
+        if part.function_call:
+            print("intentó ejecutar", part.function_call.name)
+            print("con los parametros:", part.function_call.args)
+            result = None
 
-        if part.function_call.name == "get_temperature":
-            city = part.function_call.args["city"]
-            scale = part.function_call.args["scale"]
-            result = get_temperature(city, scale)
+            if part.function_call.name == "get_temperature":
+                city = part.function_call.args["city"]
+                scale = part.function_call.args["scale"]
+                result = get_temperature(city, scale)
 
-        if part.function_call.name == "get_humidity":
-            city = part.function_call.args["city"]
-            result = get_humidity(city)
+            if part.function_call.name == "get_humidity":
+                city = part.function_call.args["city"]
+                result = get_humidity(city)
 
-        if part.function_call.name == "get_wind_speed":
-            city = part.function_call.args["city"]
-            result = get_wind_speed(city)
+            if part.function_call.name == "get_wind_speed":
+                city = part.function_call.args["city"]
+                result = get_wind_speed(city)
 
-        # El contenido de la respuesta de la función
-        function_response_part = Part.from_function_response(
-            name=part.function_call.name,
-            response={"result": result},
-        )
-        # Añadimos el contenido de la respuesta de la función a la lista de contenidos
-        function_response_parts.append(function_response_part)
+            # El contenido de la respuesta de la función
+            function_response_part = Part.from_function_response(
+                name=part.function_call.name,
+                response={"result": result},
+            )
+            # Añadimos el contenido de la respuesta de la función a la lista de contenidos
+            function_response_parts.append(function_response_part)
 
-    else:
-        print(part.text)
+        else:
+            print(part.text)
+    return function_response_parts
 
 # Este es el contenido final (prompt) (input)
+function_response_parts = tool_processing(response)
+
 contents = [
     user_content,
-    Content(role="model", parts=[part]),
-    Content(role="user", parts=[function_response_part]),
+    Content(role="model", parts=response.candidates[0].content.parts),
+    Content(role="user", parts=function_response_parts),
 ]
+
 
 # Esta es la llamada a la api (modelo) (output)
 response2 = client.models.generate_content(
@@ -140,12 +146,49 @@ response2 = client.models.generate_content(
     config=config,
 )
 
+function_response_parts2 = tool_processing(response2)
+
+# add to contents
+contents = [
+    user_content,
+    Content(role="model", parts=response.candidates[0].content.parts),
+    Content(role="user", parts=function_response_parts),
+    Content(role="model", parts=response2.candidates[0].content.parts),
+    Content(role="user", parts=function_response_parts2),
+]
+
+
+response3 = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=contents,
+    config=config,
+)
+
+function_response_parts3 = tool_processing(response3)
+
+contents = [
+    user_content,
+    Content(role="model", parts=response.candidates[0].content.parts),
+    Content(role="user", parts=function_response_parts),
+    Content(role="model", parts=response2.candidates[0].content.parts),
+    Content(role="user", parts=function_response_parts2),
+    Content(role="model", parts=response3.candidates[0].content.parts),
+    Content(role="user", parts=function_response_parts3),
+]
+
 # El resultado de la llamada a la api (modelo) (output)
-print(response2.text) 
+print(response3.candidates[0].content.parts)
 
 
+response4 = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=contents,
+    config=config,
+)
 
+function_response_parts4 = tool_processing(response4)
 
+print(response4.candidates[0].content.parts)
 
 
 
