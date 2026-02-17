@@ -2,11 +2,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain.messages import HumanMessage
-from system_prompt import prompt
 from pydantic_ai import format_as_xml
 
 from dotenv import load_dotenv
 
+from .system_prompt import prompt
 
 load_dotenv()
 
@@ -41,7 +41,11 @@ def get_wind_speed(city: str = "Concepción") -> float:
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 agent = create_agent(llm, tools=[get_temperature, get_humidity, get_wind_speed], system_prompt = format_as_xml(prompt))
 
-result = agent.invoke(
-    {"messages": [HumanMessage(content="Como va a estar el clima hoy en conce?")]}
-)
-print(result["messages"][-1].content)
+
+def llamar_ivan(consulta: str, message_history: list[HumanMessage]):
+    messages = message_history.copy()
+    messages.append(HumanMessage(content=consulta))
+    
+    return agent.invoke(
+        {"messages": messages}
+    )
