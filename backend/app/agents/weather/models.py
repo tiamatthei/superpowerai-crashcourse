@@ -9,7 +9,7 @@ class IvanTorresOutput(BaseModel):
 
 class GetTemperatureParams(BaseModel):
     city: str = Field(description="La ciudad a consultar")
-    scale: str = Field(description="La escala de medición")
+    scale: str = Field(default="celsius", description="La escala de medición")
 
 
 class GetHumidityParams(BaseModel):
